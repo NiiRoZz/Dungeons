@@ -2,7 +2,20 @@
 #include "glad/gl.h"
 #include <GLFW/glfw3.h>
 
+static void error_callback([[maybe_unused]] int error, const char* description) {
+  fprintf(stderr, "Error: %s\n", description);
+  abort();
+}
+
+static void key_callback(GLFWwindow* window, int key, [[maybe_unused]] int scancode, int action, [[maybe_unused]] int mods) {
+  if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+    glfwSetWindowShouldClose(window, true);
+  }
+}
+
 int main() {
+  glfwSetErrorCallback(error_callback);
+  
   /* Initialize the library */
   if (!glfwInit())
     return -1;
@@ -14,7 +27,7 @@ int main() {
     return -1;
   }
 
-  //glfwSetKeyCallback(window, );
+  glfwSetKeyCallback(window, key_callback);
 
   /* Make the window's context current */
   glfwMakeContextCurrent(window);
