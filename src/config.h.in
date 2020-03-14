@@ -1,0 +1,6 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+
+#define DUNGEONS_DATA_DIR "@DUNGEONS_DATA_DIR@"
+
+#endif // CONFIG_H
