@@ -5,12 +5,14 @@ project(Dungeons
 
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
-FIND_PACKAGE(glm REQUIRED)
+find_package(glm REQUIRED)
 
 set(DUNGEONS_DATA_DIR "${CMAKE_INSTALL_PREFIX}/share/games/dungeons")
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h @ONLY)
 
 set(GLAD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libraries/glad")
+add_library("glad" "${GLAD_DIR}/src/glad.c")
+target_include_directories("glad" PRIVATE "${GLAD_DIR}/include")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
@@ -26,8 +28,15 @@ add_executable(Dungeons
 
 target_link_libraries(Dungeons
   glfw
-	OpenGL::GL
+  OpenGL::GL
+  glad
 )
+
+if(NOT MSVC)
+  target_link_libraries(Dungeons
+    dl
+  )
+endif()
 
 target_include_directories(Dungeons
   PRIVATE
